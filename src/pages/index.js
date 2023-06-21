@@ -73,29 +73,33 @@ export default function Home({ datauser, datapost }) {
   };
 
   return (
-    <Layout
-      dataUser={user}
-      searchResults={searchResults}
-      setSearchTerm={setSearchTerm}
-      searchTerm={searchTerm}
-    >
-      <div className="col-span-5">
-        <div className=" grid gap-4">
-          <Form onFormSubmit={handleSubmit} />
-          {success === true ? <p>Berhasil Menambahkan...</p> : null}
-          {posts.map((item) => {
-            return <Card key={item.id} dataPost={item} />;
-          })}
+    <>
+      <Layout
+        dataUser={user}
+        searchResults={searchResults}
+        setSearchTerm={setSearchTerm}
+        searchTerm={searchTerm}
+      >
+        <div className="flex">
+          <div className="w-3/5">
+            <div className=" grid gap-4">
+              <Form onFormSubmit={handleSubmit} />
+              {success === true ? <p>Berhasil Menambahkan...</p> : null}
+              {posts.map((item) => {
+                return <Card key={item.id} dataPost={item} />;
+              })}
+            </div>
+          </div>
+          <div className="w-2/5">
+            <Search
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              searchResults={searchResults}
+            />
+          </div>
         </div>
-      </div>
-      <div className="col-span-3">
-        <Search
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          searchResults={searchResults}
-        />
-      </div>
-    </Layout>
+      </Layout>
+    </>
   );
 }
 

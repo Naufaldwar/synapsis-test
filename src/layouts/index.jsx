@@ -8,16 +8,12 @@ export default function Layout({ children, dataUser }) {
   return (
     <>
       <Navbar dataUser={dataUser} />
-      <div className="grid grid-cols-11 mt-4 ">
-        <div className="col-span-3">
-          <Link rel="stylesheet" href="/">
-            home
-          </Link>
-          <Link rel="stylesheet" href="/user">
-            user
-          </Link>
+      <div className="flex">
+        <div className=" w-1/3">
+          <Link href="/">Home</Link>
+          <Link href="/user">user</Link>
         </div>
-        {children}
+        <div className="w-2/3">{children}</div>
       </div>
     </>
   );

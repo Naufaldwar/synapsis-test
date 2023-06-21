@@ -5,7 +5,13 @@ import axios from "axios";
 export default function user({ datauser }) {
   const [user, setUsers] = useState(datauser);
 
-  return <Layout dataUser={user}>asda</Layout>;
+  return (
+    <Layout dataUser={user}>
+      <div className="w-flex">
+        <p>asdasd</p>
+      </div>
+    </Layout>
+  );
 }
 
 export async function getServerSideProps({}) {

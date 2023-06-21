@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
+import photos from "../../assets/images/photo.jpg";
 
 export const Search = ({ searchTerm, setSearchTerm, searchResults }) => {
   const handleSearch = (e) => {
@@ -20,8 +22,10 @@ export const Search = ({ searchTerm, setSearchTerm, searchResults }) => {
       <div className="flex flex-col gap-3 mt-4 w-full">
         {searchResults?.map((user) => (
           <div key={user.id} className="flex gap-2 justify-start items-center">
-            <img
-              src="https://picsum.photos/40/40"
+            <Image
+              height={40}
+              width={40}
+              src={photos}
               alt={user.name}
               className="rounded-full"
             />

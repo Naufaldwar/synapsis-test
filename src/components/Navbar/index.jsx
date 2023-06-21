@@ -1,3 +1,6 @@
+import Image from "next/image";
+import photo from "../../assets/images/photo.jpg";
+
 const Props = {
   dataUser: Object,
 };
@@ -14,8 +17,11 @@ export const Navbar = ({ dataUser }) => {
       <div className="flex items-center gap-2">
         <p>Hi! , {dataUser.name}</p>
         <div className="hidden md:flex items-center justify-center border border-gray-500  rounded-full p-1">
-          <img
-            src="https://picsum.photos/200"
+          <Image
+            alt="photo"
+            height={40}
+            width={40}
+            src={photo}
             className="object-contain h-10 w-10 rounded-full"
           />
         </div>
