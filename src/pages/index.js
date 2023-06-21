@@ -13,22 +13,6 @@ export default function Home({ datauser, datapost }) {
   const [searchResults, setSearchResults] = useState([]);
   const token =
     "c5b8cefca69edb498783452cb93311a2b98e2db4c699975b7c28e3d1626d8c6b";
-  const getData = async () => {
-    try {
-      const response = await axios.get(
-        `https://gorest.co.in/public/v2/users?name=${searchTerm}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const { data } = response;
-      setSearchResults(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const postData = async (title, post) => {
     try {
@@ -53,6 +37,22 @@ export default function Home({ datauser, datapost }) {
   };
 
   useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get(
+          `https://gorest.co.in/public/v2/users?name=${searchTerm}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { data } = response;
+        setSearchResults(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     const delayDebounceFn = setTimeout(() => {
       getData();
     }, 1000);
