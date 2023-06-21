@@ -1,13 +1,12 @@
 import { Card } from "@/components/Card";
 import { Form } from "@/components/Form";
+import { Search } from "@/components/Search";
 import Layout from "@/layouts";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Home({ datauser, datapost }) {
-  const [openLogin, setOpenLogin] = useState(false);
   const [user, setUsers] = useState(datauser);
-  const [userId, setUserId] = useState(user.id);
   const [posts, setPosts] = useState(datapost);
   const [success, setSuccess] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,22 +51,6 @@ export default function Home({ datauser, datapost }) {
       console.log(error);
     }
   };
-  const getUser = async (id) => {
-    try {
-      const response = await axios.get(
-        `https://gorest.co.in/public/v2/users/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const { data } = response;
-      setUsers(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -88,14 +71,7 @@ export default function Home({ datauser, datapost }) {
       setSuccess(false);
     }, 3000);
   };
-  const handleUser = (e) => {
-    console.log(e);
-    getUser(e.idUser);
-    setUserId(e.idUser);
-  };
-  const handleOpenLogin = () => {
-    setOpenLogin(!openLogin);
-  };
+
   return (
     <Layout
       dataUser={user}
@@ -103,7 +79,7 @@ export default function Home({ datauser, datapost }) {
       setSearchTerm={setSearchTerm}
       searchTerm={searchTerm}
     >
-      <main>
+      <div className="col-span-5">
         <div className=" grid gap-4">
           <Form onFormSubmit={handleSubmit} />
           {success === true ? <p>Berhasil Menambahkan...</p> : null}
@@ -111,7 +87,14 @@ export default function Home({ datauser, datapost }) {
             return <Card key={item.id} dataPost={item} />;
           })}
         </div>
-      </main>
+      </div>
+      <div className="col-span-3">
+        <Search
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          searchResults={searchResults}
+        />
+      </div>
     </Layout>
   );
 }

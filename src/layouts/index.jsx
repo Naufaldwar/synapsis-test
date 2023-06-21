@@ -1,63 +1,38 @@
 import { Navbar } from "@/components/Navbar";
-import { Search } from "@/components/Search";
+import Link from "next/link";
 
 const Props = {
   dataUser: Object,
-  searchTerm: String,
-  setSearchTerm: String,
-  searchResults: String,
 };
-export default function Layout({
-  children,
-  dataUser,
-  searchTerm,
-  setSearchTerm,
-  searchResults,
-}) {
+export default function Layout({ children, dataUser }) {
   return (
     <>
       <Navbar dataUser={dataUser} />
-      <div className="grid grid-cols-11 mt-4 grid-flow-row-dense ">
-        <div className="col-span-3 px-4">
-          {/* {openLogin === true ? (
-              <>
-                <p>Masuk</p>
-                <FormUser onFormSubmit={handleUser} />
-                <p>
-                  Belum Punya Akun?{" "}
-                  <span
-                    onClick={handleOpenLogin}
-                    className="hover:cursor-pointer hover:text-slate-500"
-                  >
-                    Daftar
-                  </span>
-                </p>
-              </>
-            ) : (
-              <>
-                <p>Daftar</p>
-                <FormReg />
-                <p>
-                  Sudah Punya Akun?{" "}
-                  <span
-                    onClick={handleOpenLogin}
-                    className="hover:cursor-pointer hover:text-slate-500"
-                  >
-                    Masuk
-                  </span>
-                </p>
-              </>
-            )} */}
-        </div>
-        <div className="col-span-5">{children}</div>
+      <div className="grid grid-cols-11 mt-4 ">
         <div className="col-span-3">
-          <Search
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            searchResults={searchResults}
-          />
+          <Link rel="stylesheet" href="/">
+            home
+          </Link>
+          <Link rel="stylesheet" href="/user">
+            user
+          </Link>
         </div>
+        {children}
       </div>
     </>
   );
+}
+
+export async function getServerSideProps({}) {
+  const res = await axios.get(`${process.env.BASE_URL}/users/3032041`, {
+    headers: {
+      Authorization: `Bearer ${process.env.TOKEN}`,
+    },
+  });
+  const data = await res.data;
+  return {
+    props: {
+      datauser: data,
+    },
+  };
 }
