@@ -13,11 +13,10 @@ export default function Home({ datauser, datapost }) {
   const [searchResults, setSearchResults] = useState([]);
   const token =
     "c5b8cefca69edb498783452cb93311a2b98e2db4c699975b7c28e3d1626d8c6b";
-
   const postData = async (title, post) => {
     try {
       const response = await axios.post(
-        `https://gorest.co.in/public/v2/users/${userId}/posts`,
+        `https://gorest.co.in/public/v2/users/${user.id}/posts`,
         {
           user_id: 3032041,
           title: title,
@@ -61,8 +60,6 @@ export default function Home({ datauser, datapost }) {
   }, [searchTerm]);
 
   const handleSubmit = (e) => {
-    console.log(e.post);
-    console.log(e.title);
     postData(e.title, e.post);
   };
   const handleSucces = () => {
@@ -80,24 +77,28 @@ export default function Home({ datauser, datapost }) {
         setSearchTerm={setSearchTerm}
         searchTerm={searchTerm}
       >
-        <div className="flex">
-          <div className="w-3/5">
-            <div className=" grid gap-4">
-              <Form onFormSubmit={handleSubmit} />
-              {success === true ? <p>Berhasil Menambahkan...</p> : null}
-              {posts.map((item) => {
-                return <Card key={item.id} dataPost={item} />;
-              })}
-            </div>
-          </div>
-          <div className="w-2/5">
-            <Search
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              searchResults={searchResults}
-            />
+        {/* <div className="grid grid-cols-2">
+        <p>1</p>
+        <p>2</p>
+      </div> */}
+        {/* <div className="grid grid-cols-8"> */}
+        <div className="col-span-5">
+          <div className=" grid gap-4">
+            <Form onFormSubmit={handleSubmit} />
+            {success === true ? <p>Berhasil Menambahkan...</p> : null}
+            {posts.map((item) => {
+              return <Card key={item.id} dataPost={item} />;
+            })}
           </div>
         </div>
+        <div className="col-span-3">
+          <Search
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            searchResults={searchResults}
+          />
+        </div>
+        {/* </div> */}
       </Layout>
     </>
   );
