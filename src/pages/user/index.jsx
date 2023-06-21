@@ -3,10 +3,10 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function user({ datauser }) {
-  const [user, setUsers] = useState(datauser);
+  // const [user, setUsers] = useState(datauser);
 
   return (
-    <Layout dataUser={user}>
+    <Layout dataUser={datauser}>
       <div className="w-flex">
         <p>asdasd</p>
       </div>
