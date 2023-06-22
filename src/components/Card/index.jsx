@@ -46,13 +46,11 @@ export const Card = ({ dataPost, dataComments }) => {
       </div>
       <div className="flex flex-col gap-2 mt-4">
         {dataComments.map((item) => (
-          <>
+          <div key={item.id}>
             {item.post_id === dataPost.id && (
-              <div key={item.id}>
-                <CardComment dataComment={item} postId={dataPost.id} />
-              </div>
+              <CardComment dataComment={item} postId={dataPost.id} />
             )}
-          </>
+          </div>
         ))}
       </div>
     </div>
