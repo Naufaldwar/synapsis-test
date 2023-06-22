@@ -16,9 +16,7 @@ export default function Layout({ children, dataUser }) {
       </div> */}
 
       <div className="flex gap-4 mt-4 static h-screen justify-between">
-        <div className=" md:block hidden w-[30%] sticky bottom-0 ">
-          <SideBar />
-        </div>
+        <SideBar />
         <div className="w-full md:w-[70%] px-4">{children}</div>
       </div>
     </>
