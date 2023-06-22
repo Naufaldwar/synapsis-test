@@ -14,7 +14,6 @@ export default function user({ datauser }) {
       value: "female",
     },
   ];
-  console.log(datauser);
   const [opened, setOpened] = useState(false);
   const [genderOption, setGenderOption] = useState(datauser.gender);
   const [name, setName] = useState(datauser.name);
@@ -30,11 +29,9 @@ export default function user({ datauser }) {
     e.preventDefault();
     setEmail(e.target.value);
   };
-  console.log(name);
-  console.log(email);
 
   const handleConfirm = () => {
-    setOpened(true);
+    setOpened(!opened);
   };
   const handleSubmit = async () => {
     try {
@@ -122,7 +119,7 @@ export default function user({ datauser }) {
               <div className="flex justify-evenly items-center">
                 <button
                   className="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-                  onClick={setOpened(false)}
+                  onClick={handleConfirm}
                 >
                   Close
                 </button>
