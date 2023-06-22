@@ -30,6 +30,9 @@ export default function User({ datauser }) {
     setEmail(e.target.value);
   };
 
+  const handleChangeGander = (gender) => {
+    setGenderOption(gender);
+  };
   const handleConfirm = () => {
     setOpened(!opened);
   };
@@ -90,7 +93,7 @@ export default function User({ datauser }) {
                     type="radio"
                     value={genderOption}
                     checked={genderOption === item.value}
-                    onChange={setGenderOption(item.value)}
+                    onChange={() => setGenderOption(item.value)}
                     className="border border-gray-500 rounded-lg p-2 w-full"
                   />
                   <p className="text-sm">{item.label}</p>
