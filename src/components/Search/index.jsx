@@ -13,6 +13,7 @@ export const Search = ({ searchTerm, setSearchTerm, searchResults }) => {
     <div className="flex flex-col items-center self-end px-4">
       <p>Users</p>
       <input
+        id="search"
         type="text"
         className="border border-gray-500 rounded-full px-2 py-1 w-full"
         placeholder="Search"

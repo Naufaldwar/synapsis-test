@@ -11,8 +11,13 @@ export const FormUser = ({ onFormSubmit }) => {
     onFormSubmit({ idUser });
   };
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4  p-4 ">
+    <form
+      id="submituser"
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-4  p-4 "
+    >
       <input
+        id="idUser"
         type="text"
         value={idUser}
         onChange={handleIdUser}

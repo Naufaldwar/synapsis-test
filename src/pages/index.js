@@ -39,6 +39,29 @@ export default function Home({ datauser, datapost, datacomments }) {
     }
   };
 
+  const postDataComment = async (id, comment, name, email) => {
+    try {
+      const response = await axios.post(
+        `https://gorest.co.in/public/v2/posts/${id}/comments`,
+        {
+          post_id: id,
+          name: name,
+          email: email,
+          body: comment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      setComments((comments) => [response.data, ...comments]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const fetchPost = async () => {
     try {
       const response = await axios.get(`https://gorest.co.in/public/v2/posts`, {
@@ -75,6 +98,10 @@ export default function Home({ datauser, datapost, datacomments }) {
 
   const handleSubmit = (e) => {
     postData(e.title, e.post);
+  };
+
+  const handleComment = (e) => {
+    postDataComment(e.id, e.comment, user.name, user.email);
   };
 
   const handleSucces = () => {
@@ -122,13 +149,19 @@ export default function Home({ datauser, datapost, datacomments }) {
         searchTerm={searchTerm}
       >
         <div className="flex justify-between gap-4">
-          <div className="w-[65%]">
+          <div className="w-full lg:w-[65%]">
             <div className=" grid gap-4">
               <Form onFormSubmit={handleSubmit} />
               {success === true ? <p>Berhasil Menambahkan...</p> : null}
               {posts.map((item) => {
                 return (
-                  <Card key={item.id} dataPost={item} dataComments={comments} />
+                  <Card
+                    key={item.id}
+                    onFormSubmit={handleComment}
+                    dataPost={item}
+                    dataComments={comments}
+                    dataUser={user}
+                  />
                 );
               })}
               <p
@@ -139,7 +172,7 @@ export default function Home({ datauser, datapost, datacomments }) {
               </p>
             </div>
           </div>
-          <div className="w-[35%]">
+          <div className="w-[35%] hidden lg:block">
             <Search
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}
@@ -169,6 +202,10 @@ export async function getServerSideProps() {
     params: {
       page: 1,
       per_page: 10,
+    },
+
+    headers: {
+      Authorization: `Bearer ${process.env.TOKEN}`,
     },
   });
   const datacomments = await rescomments.data;

@@ -3,11 +3,15 @@ export const FormReg = ({ onFormSubmit }) => {
     <div className="flex flex-col gap-4 ">
       <form onSubmit={onFormSubmit} className="flex flex-col gap-4  p-4 ">
         <input
+          id="name"
+          name="name"
           type="text"
           placeholder="Masukan Nama"
           className="border rounded-lg p-2 w-full"
         />
         <input
+          id="email"
+          name="email"
           type="text"
           placeholder="Masukan Email"
           className="border rounded-lg p-2 w-full"

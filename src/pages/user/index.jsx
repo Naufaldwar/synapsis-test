@@ -16,6 +16,7 @@ export default function User({ datauser }) {
   ];
   const [opened, setOpened] = useState(false);
   const [genderOption, setGenderOption] = useState(datauser.gender);
+  const [isValid, setIsValid] = useState(true);
   const [name, setName] = useState(datauser.name);
   const [email, setEmail] = useState(datauser.email);
   const token =
@@ -25,9 +26,19 @@ export default function User({ datauser }) {
     setName(e.target.value);
   };
 
+  const handleCheckEmail = (e) => {
+    e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(e.target.value)) {
+      setIsValid(false);
+      return;
+    }
+    setIsValid(true);
+  };
   const handleChangeEmail = (e) => {
     e.preventDefault();
     setEmail(e.target.value);
+    handleCheckEmail(e);
   };
 
   const handleChangeGander = (gender) => {
@@ -60,13 +71,15 @@ export default function User({ datauser }) {
   };
   return (
     <Layout dataUser={user}>
-      <div className="flex flex-col w-[70%]">
+      <div className="flex flex-col lg:w-[70%]">
         <p className="text-xl">User Settings</p>
         <hr className="my-3" />
         <div className="flex flex-col gap-2">
           <div>
             <p className="text-sm">Name</p>
             <input
+              id="name"
+              autoComplete="off"
               value={name}
               onChange={handleChangeName}
               type="text"
@@ -77,12 +90,17 @@ export default function User({ datauser }) {
           <div>
             <p className="text-sm">Email</p>
             <input
+              id="email"
+              autoComplete="off"
               value={email}
               onChange={handleChangeEmail}
               type="text"
               placeholder="email"
               className="border border-gray-500 rounded-lg p-2 w-full"
             />
+            {!isValid && (
+              <span className="text-red-300 text-xs">Email invalid</span>
+            )}
           </div>
           <div>
             <p className="text-sm">Gender</p>
@@ -90,6 +108,9 @@ export default function User({ datauser }) {
               {gender.map((item) => (
                 <div key={item.value} className="flex items-center gap-1">
                   <input
+                    // id={item.value}
+                    autoComplete="off"
+                    name={item.value}
                     type="radio"
                     value={genderOption}
                     checked={genderOption === item.value}
@@ -106,11 +127,14 @@ export default function User({ datauser }) {
           <button
             onClick={handleConfirm}
             disabled={
-              name === user.name &&
-              email === user.email &&
-              genderOption === user.gender
+              (name === user.name &&
+                email === user.email &&
+                genderOption === user.gender) ||
+              name === "" ||
+              email === "" ||
+              !isValid
             }
-            className="bg-blue-500 text-white rounded-lg px-4 py-2 disabled:bg-slate-300"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded self-end disabled:cursor-default disabled:bg-blue-300 disabled:hover:bg-blue-300 disabled:hover:cursor-default"
           >
             Save
           </button>
