@@ -2,7 +2,7 @@ import Layout from "@/layouts";
 import { useState } from "react";
 import axios from "axios";
 
-export default function user({ datauser }) {
+export default function User({ datauser }) {
   const [user, setUsers] = useState(datauser);
   const gender = [
     {
