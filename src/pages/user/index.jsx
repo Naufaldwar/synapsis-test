@@ -1,9 +1,15 @@
 import Layout from "@/layouts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { getLocalStorage, setLocalStorage } from "../localStorage";
 
-export default function User({ datauser }) {
-  const [user, setUsers] = useState(datauser);
+export default function User() {
+  let id = null;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
+  const router = useRouter();
   const gender = [
     {
       label: "Male",
@@ -14,13 +20,13 @@ export default function User({ datauser }) {
       value: "female",
     },
   ];
+  const [user, setUsers] = useState({});
   const [opened, setOpened] = useState(false);
-  const [genderOption, setGenderOption] = useState(datauser.gender);
+  const [genderOption, setGenderOption] = useState("");
   const [isValid, setIsValid] = useState(true);
-  const [name, setName] = useState(datauser.name);
-  const [email, setEmail] = useState(datauser.email);
-  const token =
-    "c5b8cefca69edb498783452cb93311a2b98e2db4c699975b7c28e3d1626d8c6b";
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const token = process.env.TOKEN;
   const handleChangeName = (e) => {
     e.preventDefault();
     setName(e.target.value);
@@ -41,8 +47,8 @@ export default function User({ datauser }) {
     handleCheckEmail(e);
   };
 
-  const handleChangeGander = (gender) => {
-    setGenderOption(gender);
+  const handleChangeGander = (e) => {
+    setGenderOption(e.target.value);
   };
   const handleConfirm = () => {
     setOpened(!opened);
@@ -50,7 +56,7 @@ export default function User({ datauser }) {
   const handleSubmit = async () => {
     try {
       const res = await axios.patch(
-        `https://gorest.co.in/public/v2/users/3032041`,
+        `https://gorest.co.in/public/v2/users/${id}`,
         {
           name: name,
           email: email,
@@ -69,6 +75,52 @@ export default function User({ datauser }) {
       console.log(error);
     }
   };
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(`${process.env.BASE_URL}/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.data;
+      setUsers((user) => ({ ...user, ...data }));
+      setOpened(false);
+      localStorage.removeItem("id");
+      router.push("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("id");
+    router.push("/login");
+  };
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await axios.get(`${process.env.BASE_URL}/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.data;
+        setUsers(data);
+        setEmail(data.email);
+        setName(data.name);
+        setGenderOption(data.gender);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (id == null) {
+      router.push("/login");
+    } else {
+      getData();
+    }
+  }, []);
+
   return (
     <Layout dataUser={user}>
       <div className="flex flex-col lg:w-[70%]">
@@ -81,7 +133,7 @@ export default function User({ datauser }) {
               id="name"
               autoComplete="off"
               value={name}
-              onChange={handleChangeName}
+              onChange={(e) => handleChangeName(e)}
               type="text"
               placeholder="name"
               className="border border-gray-500 rounded-lg p-2 w-full"
@@ -93,7 +145,7 @@ export default function User({ datauser }) {
               id="email"
               autoComplete="off"
               value={email}
-              onChange={handleChangeEmail}
+              onChange={(e) => handleChangeEmail(e)}
               type="text"
               placeholder="email"
               className="border border-gray-500 rounded-lg p-2 w-full"
@@ -108,7 +160,6 @@ export default function User({ datauser }) {
               {gender.map((item) => (
                 <div key={item.value} className="flex items-center gap-1">
                   <input
-                    // id={item.value}
                     autoComplete="off"
                     name={item.value}
                     type="radio"
@@ -127,9 +178,9 @@ export default function User({ datauser }) {
           <button
             onClick={handleConfirm}
             disabled={
-              (name === user.name &&
-                email === user.email &&
-                genderOption === user.gender) ||
+              (name === user?.name &&
+                email === user?.email &&
+                genderOption === user?.gender) ||
               name === "" ||
               email === "" ||
               !isValid
@@ -160,21 +211,21 @@ export default function User({ datauser }) {
             </div>
           </div>
         )}
+        <div className="flex justify-between">
+          <p
+            onClick={handleLogOut}
+            className="text-red-400 hover:text-red-600 hover:cursor-pointer text-sm underline "
+          >
+            LogOut
+          </p>
+          <p
+            className="text-red-400 hover:text-red-600 hover:cursor-pointer text-sm underline"
+            onClick={handleDelete}
+          >
+            Delete account
+          </p>
+        </div>
       </div>
     </Layout>
   );
-}
-
-export async function getServerSideProps({}) {
-  const res = await axios.get(`${process.env.BASE_URL}/users/3032041`, {
-    headers: {
-      Authorization: `Bearer ${process.env.TOKEN}`,
-    },
-  });
-  const data = await res.data;
-  return {
-    props: {
-      datauser: data,
-    },
-  };
 }

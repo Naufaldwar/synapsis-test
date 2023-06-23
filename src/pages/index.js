@@ -5,21 +5,24 @@ import Layout from "@/layouts";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Home({ datauser, datapost, datacomments }) {
+export default function Home({ datapost, datacomments }) {
+  let id = null;
+  if (typeof localStorage !== "undefined") {
+    id = localStorage.getItem("id");
+  }
   const [comments, setComments] = useState(datacomments);
   const [page, setPage] = useState(2);
-  const [user, setUsers] = useState(datauser);
+  const [user, setUsers] = useState();
   const [posts, setPosts] = useState(datapost);
   const [success, setSuccess] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const token = process.env.TOKEN;
 
-  const token =
-    "c5b8cefca69edb498783452cb93311a2b98e2db4c699975b7c28e3d1626d8c6b";
   const postData = async (title, post) => {
     try {
       const response = await axios.post(
-        `https://gorest.co.in/public/v2/users/${user.id}/posts`,
+        `https://gorest.co.in/public/v2/users/${id}/posts`,
         {
           user_id: user.id,
           title: title,
@@ -31,7 +34,6 @@ export default function Home({ datauser, datapost, datacomments }) {
           },
         }
       );
-      console.log(response);
       setPosts((posts) => [response.data, ...posts]);
       handleSucces();
     } catch (error) {
@@ -55,7 +57,6 @@ export default function Home({ datauser, datapost, datacomments }) {
           },
         }
       );
-      console.log(response);
       setComments((comments) => [response.data, ...comments]);
     } catch (error) {
       console.log(error);
@@ -120,7 +121,35 @@ export default function Home({ datauser, datapost, datacomments }) {
     const getData = async () => {
       try {
         const response = await axios.get(
-          `https://gorest.co.in/public/v2/users?name=${searchTerm}`,
+          `https://gorest.co.in/public/v2/users/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const { data } = response;
+        setUsers(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    // {
+    //   id && getData();
+    // }
+    if (id) {
+      getData();
+    } else {
+      console.log("id kosong");
+    }
+    // getData();
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.BASE_URL}/users?name=${searchTerm}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -151,7 +180,7 @@ export default function Home({ datauser, datapost, datacomments }) {
         <div className="flex justify-between gap-4">
           <div className="w-full lg:w-[65%]">
             <div className=" grid gap-4">
-              <Form onFormSubmit={handleSubmit} />
+              {id && <Form onFormSubmit={handleSubmit} />}
               {success === true ? <p>Berhasil Menambahkan...</p> : null}
               {posts.map((item) => {
                 return (
@@ -186,12 +215,6 @@ export default function Home({ datauser, datapost, datacomments }) {
 }
 
 export async function getServerSideProps() {
-  const res = await axios.get(`${process.env.BASE_URL}/users/3032041`, {
-    headers: {
-      Authorization: `Bearer ${process.env.TOKEN}`,
-    },
-  });
-  const data = await res.data;
   const respost = await axios.get(`${process.env.BASE_URL}/posts`, {
     headers: {
       Authorization: `Bearer ${process.env.TOKEN}`,
@@ -211,7 +234,6 @@ export async function getServerSideProps() {
   const datacomments = await rescomments.data;
   return {
     props: {
-      datauser: data,
       datapost: datapost,
       datacomments: datacomments,
     },

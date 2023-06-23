@@ -15,7 +15,11 @@ export const Navbar = ({ dataUser }) => {
         </a>
       </div>
       <div className="flex items-center gap-2">
-        <p className="hidden sm:flex">Hi! , {dataUser.name}</p>
+        {dataUser?.name != null ? (
+          <p className="hidden sm:flex">Hi! , {dataUser.name}</p>
+        ) : (
+          <p className="hidden sm:flex">Hi! , guest</p>
+        )}
         <div className="flex items-center justify-center border border-gray-500  rounded-full p-1">
           <Image
             alt="photo"

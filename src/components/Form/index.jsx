@@ -26,6 +26,9 @@ export const Form = ({ onFormSubmit }) => {
       onSubmit={handleSubmit}
       className="flex flex-col gap-4 border rounded-lg p-4 "
     >
+      <label htmlFor="title">
+        Title <span className="text-red-500">*</span>
+      </label>
       <input
         type="text"
         id="title"
@@ -35,6 +38,9 @@ export const Form = ({ onFormSubmit }) => {
         placeholder="Title"
         className="border rounded-lg p-2 w-full"
       />
+      <label htmlFor="post">
+        Post <span className="text-red-500">*</span>
+      </label>
       <textarea
         value={post}
         onChange={handlePost}
