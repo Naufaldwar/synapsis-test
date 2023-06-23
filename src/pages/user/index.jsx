@@ -119,7 +119,7 @@ export default function User() {
     } else {
       getData();
     }
-  }, [id]);
+  });
 
   return (
     <Layout dataUser={user}>

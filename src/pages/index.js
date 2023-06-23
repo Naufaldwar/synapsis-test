@@ -140,7 +140,7 @@ export default function Home({ datapost, datacomments }) {
     } else {
       console.log("id kosong");
     }
-  }, [id]);
+  });
 
   useEffect(() => {
     const getData = async () => {
