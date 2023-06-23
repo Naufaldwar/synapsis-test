@@ -14,11 +14,11 @@ export const Navbar = ({ dataUser }) => {
   return (
     <nav className="bg-red-200 w-full flex justify-between items-center px-10">
       <div>
-        <a href="/" className="flex items-center py-4 px-2">
+        <Link href="/" className="flex items-center py-4 px-2">
           <span className="font-semibold text-gray-500 text-lg">
             Synapsis Test
           </span>
-        </a>
+        </Link>
       </div>
       <div className="flex lg:hidden">
         <button
