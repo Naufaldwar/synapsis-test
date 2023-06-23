@@ -1,6 +1,7 @@
 import Image from "next/image";
 import photo from "../../assets/images/photo.jpg";
 import { useState } from "react";
+import Link from "next/link";
 
 const Props = {
   dataUser: Object,
@@ -35,17 +36,17 @@ export const Navbar = ({ dataUser }) => {
         </button>
       </div>
       {open && (
-        <div className="lg:hidden absolute md:static right-4 rounded top-16 bg-slate-100 flex-col w-[30%] gap-4 h-fit py-4  px-4">
-          <a href="/">
+        <div className="lg:hidden absolute lg:static right-4 rounded top-16 bg-slate-100 flex-col w-[30%] gap-4 h-fit py-4  px-4">
+          <Link href="/">
             <button className="hover:text-slate-400 hover:underline py-2  w-full">
               Home
             </button>
-          </a>
-          <a href="/user">
+          </Link>
+          <Link href="/user">
             <button className="hover:text-slate-400 hover:underline py-2  w-full">
               User
             </button>
-          </a>
+          </Link>
         </div>
       )}
 
