@@ -134,16 +134,13 @@ export default function Home({ datapost, datacomments }) {
         console.log(error);
       }
     };
-    // {
-    //   id && getData();
-    // }
+
     if (id) {
       getData();
     } else {
       console.log("id kosong");
     }
-    // getData();
-  }, []);
+  });
 
   useEffect(() => {
     const getData = async () => {
