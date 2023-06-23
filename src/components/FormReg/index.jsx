@@ -81,9 +81,9 @@ export const FormReg = ({ onFormSubmit }) => {
         />
         {!isValid && <p className="text-red-500 text-sm">Email invalid</p>}
 
-        <p>
+        <label htmlFor="gender">
           Gender <span className="text-red-500">*</span>
-        </p>
+        </label>
         <div className="flex gap-4">
           {gender.map((item, index) => {
             return (

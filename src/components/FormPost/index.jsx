@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Form = ({ onFormSubmit }) => {
+export const FormPost = ({ onFormSubmit }) => {
   const [post, setPost] = useState("");
   const [title, setTitle] = useState("");
 

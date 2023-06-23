@@ -1,5 +1,5 @@
 import { Card } from "@/components/Card";
-import { Form } from "@/components/Form";
+import { Form, FormPost } from "@/components/FormPost";
 import { Search } from "@/components/Search";
 import Layout from "@/layouts";
 import axios from "axios";
@@ -10,6 +10,7 @@ export default function Home({ datapost, datacomments }) {
   if (typeof localStorage !== "undefined") {
     id = localStorage.getItem("id");
   }
+  const [userId, setUserId] = useState(id);
   const [comments, setComments] = useState(datacomments);
   const [page, setPage] = useState(2);
   const [user, setUsers] = useState();
@@ -121,7 +122,7 @@ export default function Home({ datapost, datacomments }) {
     const getData = async () => {
       try {
         const response = await axios.get(
-          `https://gorest.co.in/public/v2/users/${id}`,
+          `https://gorest.co.in/public/v2/users/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -135,12 +136,8 @@ export default function Home({ datapost, datacomments }) {
       }
     };
 
-    if (id) {
-      getData();
-    } else {
-      console.log("id kosong");
-    }
-  });
+    getData();
+  }, [id, token]);
 
   useEffect(() => {
     const getData = async () => {
@@ -177,7 +174,7 @@ export default function Home({ datapost, datacomments }) {
         <div className="flex justify-between gap-4">
           <div className="w-full lg:w-[65%]">
             <div className=" grid gap-4">
-              {id && <Form onFormSubmit={handleSubmit} />}
+              {id && <FormPost onFormSubmit={handleSubmit} />}
               {success === true ? <p>Berhasil Menambahkan...</p> : null}
               {posts.map((item) => {
                 return (

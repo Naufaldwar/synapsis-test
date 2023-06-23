@@ -2,7 +2,6 @@ import Layout from "@/layouts";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { getLocalStorage, setLocalStorage } from "../localStorage";
 
 export default function User() {
   let id = null;
@@ -119,7 +118,7 @@ export default function User() {
     } else {
       getData();
     }
-  });
+  }, []);
 
   return (
     <Layout dataUser={user}>
