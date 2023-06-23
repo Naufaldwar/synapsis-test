@@ -118,7 +118,7 @@ export default function User() {
     } else {
       getData();
     }
-  }, []);
+  }, [id, router, token]);
 
   return (
     <Layout dataUser={user}>

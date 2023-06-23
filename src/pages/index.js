@@ -137,7 +137,7 @@ export default function Home({ datapost, datacomments }) {
     };
 
     getData();
-  }, [id, token]);
+  }, [userId, token]);
 
   useEffect(() => {
     const getData = async () => {
@@ -161,7 +161,7 @@ export default function Home({ datapost, datacomments }) {
     }, 1000);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+  }, [searchTerm, token]);
 
   return (
     <>
