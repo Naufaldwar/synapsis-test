@@ -195,7 +195,7 @@ export default function Home({ datapost, datacomments }) {
               </p>
             </div>
           </div>
-          <div className="w-[35%] hidden lg:block">
+          <div className="w-full lg:w-[35%] hidden md:block">
             <Search
               searchTerm={searchTerm}
               setSearchTerm={setSearchTerm}

@@ -57,7 +57,7 @@ export default function Login() {
   };
   return (
     <Layout>
-      <div className="w-[70%]">
+      <div className="w-full md:w-[70%]">
         {login === false ? (
           <>
             <h1>Register</h1>
