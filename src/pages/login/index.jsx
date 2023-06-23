@@ -3,7 +3,7 @@ import { FormUser } from "@/components/FormUser";
 import Layout from "@/layouts";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { setLocalStorage } from "../localStorage";
+import { setLocalStorage } from "../../utils/localStorage";
 import { useState } from "react";
 
 export default function Login() {
